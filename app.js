@@ -1,8 +1,8 @@
 const express = require('express');
 const app = express();
 const bodyPaser = require('body-parser');
-const employeeRoute = require('./routes/employee');
-const userRoute = require('./routes/admin-route')
+const employeeRoute = require('./routes/employee-access');
+const userRoute = require('./routes/admin')
 
 // app.use((req, res, next) => {
 //     res.setHeader('Access-Control-Allow-Origin', '*');

@@ -1,5 +1,6 @@
 const {Client} = require('pg');
 const connectionString = 'postgressql://postgres:password@localhost:5432/postgres';
+const bcrypt = require('bcrypt');
 
 const client = new Client({
     connectionString:connectionString
@@ -29,11 +30,11 @@ async function read(){
     } 
 }
 
-async function add(values){
-    const text = "INSERT INTO employee(name, department) VALUES($1, $2)";
-    const result = await client.query(text, values);
-    return result;
-}
+// async function add(values){
+//     const text = "INSERT INTO employee(email, department, password) VALUES($1, $2, $3)";
+//     const result = await client.query(text, values);
+//     return result;
+// }
 
 async function remove(id){
     const result = await client.query(`DELETE FROM employee WHERE id = ${id}`);
@@ -47,7 +48,7 @@ async function readOne(id){
 
 
 async function update(id, values){
-    const text = `UPDATE employee SET name = $1, department = $2 WHERE id = ${id}`;
+    const text = `UPDATE employee SET email = $1, department = $2 WHERE id = ${id}`;
     const result = await client.query(text, values);
     return result;
 }
@@ -69,21 +70,31 @@ exports.getAllEmployee = async (req, res, next) =>{
 }
 
 exports.addEmployee = async (req, res, next) =>{
-    let result = {};
-    const values = [
-        req.body.name,
-        req.body.department
-    ];
-    const row = await add(values);
-        if(row.rowCount > 0){
-            result.status = 200;
-            result.description = 'New employee successfully added';
-        }else{
-            result.status = 404;
-            result.description = 'Unable to add new employee';
-            results.error = row.error;
-        } 
-        res.json(result);
+    bcrypt.hash(req.body.password, 10).then((hash) =>{
+        const text = "INSERT INTO employee(email, department, password) VALUES($1, $2, $3)";
+        const values = [
+            req.body.email,
+            req.body.department,
+            hash
+        ];
+        client.query(text, values).then(() => { 
+            res.json({
+                status : 200,
+                description :'New employee successfully added',
+            })
+        })
+        .catch(() =>{
+            res.json({
+                status : 404,
+                description : 'Unable to add new employee',
+            }) 
+        })   
+    }).catch(() =>{
+        res.json({
+            status: 500,
+            description: "Unable to encode password",
+        })
+    })
 
 }
 
@@ -121,7 +132,7 @@ exports.updateEmployee = async (req, res, next) =>{
     const id = req.params.id
     let result = {};
     const values = [
-        req.body.name,
+        req.body.email,
         req.body.department
     ]
     const row = await update(id, values);

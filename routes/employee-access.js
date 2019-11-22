@@ -1,7 +1,7 @@
 const employeeCtrl = require('../controllers/employee');
 const express = require('express');
 const router = express.Router();
-const auth = require('../middleware/admin-auth');
+const auth = require('../middleware/admin');
 
 router.post('/', auth, employeeCtrl.addEmployee);
 router.get('/' + '', auth, employeeCtrl.getAllEmployee);
