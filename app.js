@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const bodyPaser = require('body-parser');
-const employeeRoute = require('./routes/employee-access');
+const employeeRoute = require('./routes/employee');
 const userRoute = require('./routes/admin')
 
 // app.use((req, res, next) => {
