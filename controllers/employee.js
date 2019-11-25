@@ -31,16 +31,10 @@ async function read(){
     } 
 }
 
-// async function add(values){
-//     const text = "INSERT INTO employee(email, department, password) VALUES($1, $2, $3)";
-//     const result = await client.query(text, values);
+// async function remove(id){
+//     const result = await client.query(`DELETE FROM article WHERE employee_id = ${id}`);
 //     return result;
 // }
-
-async function remove(id){
-    const result = await client.query(`DELETE FROM employee WHERE id = ${id}`);
-    return result;
-}
 
 async function readOne(id){
     const results = await client.query(`SELECT * FROM employee WHERE id = ${id}`);
@@ -100,17 +94,24 @@ exports.addEmployee = async (req, res, next) =>{
 }
 
 exports.deleteEmployee = async (req, res, next) =>{
-    const id = req.params.id;
-    let result = {};
-    const row = await remove(id);
-    if(row.rowCount > 0){
-        result.status = 200;
-        result.description = 'Employee has been deleted successfully';
-    }else{
-        result.status = 404;
-        result.description = 'Unable to delete employee';
-    }
-    res.json(result);
+    const text = "DELETE FROM employee WHERE id = $1";
+    const article = "DELETE FROM article WHERE employee_id = $1";
+    const values = [
+        req.params.id
+    ]
+    client.query(article, values);
+    client.query(text, values).then(() => {
+        res.json({
+            status : 200,
+            description :'Employee and Associated Articles has been deleted successfully',   
+        })
+    }).catch(() =>{
+        res.json({
+            status : 404,
+            description :'Unable to delete employee'
+        })
+    })
+    
 }
 
 exports.getOneEmployee = async (req, res, next) =>{
@@ -149,18 +150,18 @@ exports.updateEmployee = async (req, res, next) =>{
 
 
 exports.login = (req, res, next) => {
-    const text = "SELECT * FROM employee WHERE name = $1";
+    const text = "SELECT * FROM employee WHERE email = $1";
     const values = [
-        req.body.name
+        req.body.email
     ]
-    client.query(text, values).then((employee) =>{
-        if(!employee){
+    client.query(text, values).then((result) =>{
+        if(!result){
             res.json({
                 status: 401,
                 description: "Employee Does not exist"
             })
         }
-        const employee = employee.rows[0];
+        const employee = result.rows[0];
         bcrypt.compare(req.body.password, employee.password).then((valid) =>{
             if(!valid){
                 res.json({

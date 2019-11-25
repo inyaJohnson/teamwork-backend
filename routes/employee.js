@@ -8,6 +8,7 @@ router.get('/' + '', auth, employeeCtrl.getAllEmployee);
 router.get('/:id', auth, employeeCtrl.getOneEmployee);
 router.delete('/:id', auth, employeeCtrl.deleteEmployee);
 router.put('/:id', auth, employeeCtrl.updateEmployee);
+router.post('/login', employeeCtrl.login);
 
 
 module.exports = router;

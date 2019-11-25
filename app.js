@@ -2,7 +2,8 @@ const express = require('express');
 const app = express();
 const bodyPaser = require('body-parser');
 const employeeRoute = require('./routes/employee');
-const userRoute = require('./routes/admin')
+const userRoute = require('./routes/admin');
+const articleRoute = require('./routes/article');
 
 // app.use((req, res, next) => {
 //     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -13,7 +14,8 @@ const userRoute = require('./routes/admin')
 
 app.use(bodyPaser.json());
 
-app.use('/api/employee', employeeRoute)
-app.use('/api/admin', userRoute)
+app.use('/api/employee', employeeRoute);
+app.use('/api/admin', userRoute);
+app.use('/api/article', articleRoute);
 
 module.exports = app;
