@@ -1,9 +1,11 @@
 const express = require('express');
 const app = express();
 const bodyPaser = require('body-parser');
-const employeeRoute = require('./routes/employee');
-const userRoute = require('./routes/admin');
+const userRoute = require('./routes/user');
+const adminRoute = require('./routes/admin');
 const articleRoute = require('./routes/article');
+const fileUpload = require('express-fileupload');
+const gifRoute = require('./routes/gif');
 
 // app.use((req, res, next) => {
 //     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -14,8 +16,13 @@ const articleRoute = require('./routes/article');
 
 app.use(bodyPaser.json());
 
-app.use('/api/employee', employeeRoute);
-app.use('/api/admin', userRoute);
+app.use('/v1/', userRoute);
+app.use('/api/admin', adminRoute);
 app.use('/api/article', articleRoute);
+//ORDER FOR GIF ROUTE MATTERS
+app.use(fileUpload({
+    useTempFiles : true
+}));
+app.use('/api/gif', gifRoute);
 
 module.exports = app;

@@ -9,6 +9,7 @@ module.exports = (req, res, next) =>{
         if(req.body.userId && req.body.userId !== userId){
             throw 'Invalid User ID'
         }else{
+            req.specialData = {token, userId};
             next();
         }
     }catch{
