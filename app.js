@@ -18,7 +18,7 @@ app.use(bodyPaser.json());
 
 app.use('/v1/', userRoute);
 app.use('/api/admin', adminRoute);
-app.use('/api/article', articleRoute);
+app.use('/v1/articles', articleRoute);
 //ORDER FOR GIF ROUTE MATTERS
 app.use(fileUpload({
     useTempFiles : true

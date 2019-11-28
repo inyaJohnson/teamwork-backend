@@ -171,7 +171,7 @@ exports.signIn = (req, res, next) => {
     .catch(() =>{
         res.json({
             status : 'Error',
-            message: 'Unable process request'
+            message: 'User does not exist',
         })
     })
 }
