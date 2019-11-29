@@ -132,7 +132,6 @@ exports.updateUser = async (req, res, next) =>{
     })
 }
 
-
 exports.signIn = (req, res, next) => {
     const text = `SELECT * FROM users WHERE email = $1`;
     const values = [

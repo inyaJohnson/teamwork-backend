@@ -57,7 +57,7 @@ exports.addArticle = (req, res, next) => {
 
 exports.updateArticle = (req, res, next) => {
     const text = `UPDATE articles SET title =$1, article = $2, category = $3, 
-    userId = (SELECT id FROM users WHERE id = ${req.specialData.userId}) WHERE id = ${req.params.id}`;
+    userId = (SELECT id FROM users WHERE id = ${req.specialData.userId}) WHERE id = ${req.params.articleId}`;
     const values = [
         req.body.title,
         req.body.article,
@@ -82,7 +82,7 @@ exports.updateArticle = (req, res, next) => {
 exports.deleteArticle = (req, res, next) => {
     const text = `DELETE from articles where id = $1`; 
     const values = [
-        req.params.id
+        req.params.articleId
     ];
     client.query(text, values).then(()=>{
         res.json({
@@ -99,14 +99,14 @@ exports.deleteArticle = (req, res, next) => {
 
 
 exports.getOneArticle = (req, res, next) =>{
-    const text = `SELECT * FROM articles WHERE id = ${req.params.id}`;
+    const text = `SELECT * FROM articles WHERE id = ${req.params.articleId}`;
     client.query(text).then((result)=>{
-        const articles = result.rows;
-        if(articles.length > 0){
+        const article = result.rows;
+        if(article.length > 0){
             res.json({
                 status:'Successs',
                 data:{
-                    articles
+                    article
                 }
             })
         }else{
@@ -115,7 +115,7 @@ exports.getOneArticle = (req, res, next) =>{
     }).catch(()=>{
         res.json({
             status: 'Error',
-            message : 'Articles does not exist'
+            message : 'Article does not exist'
         })
     })
 }

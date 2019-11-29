@@ -23,6 +23,6 @@ app.use('/v1/articles', articleRoute);
 app.use(fileUpload({
     useTempFiles : true
 }));
-app.use('/api/gif', gifRoute);
+app.use('/v1/gifs', gifRoute);
 
 module.exports = app;
