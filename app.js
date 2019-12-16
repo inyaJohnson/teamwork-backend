@@ -6,6 +6,7 @@ const adminRoute = require('./routes/admin');
 const articleRoute = require('./routes/article');
 const fileUpload = require('express-fileupload');
 const gifRoute = require('./routes/gif');
+const feedRoute = require('./routes/feed');
 
 // app.use((req, res, next) => {
 //     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -17,8 +18,9 @@ const gifRoute = require('./routes/gif');
 app.use(bodyPaser.json());
 
 app.use('/v1/', userRoute);
-app.use('/api/admin', adminRoute);
+app.use('/v1/admin', adminRoute);
 app.use('/v1/articles', articleRoute);
+app.use('/v1/feed', feedRoute);
 //ORDER FOR GIF ROUTE MATTERS
 app.use(fileUpload({
     useTempFiles : true

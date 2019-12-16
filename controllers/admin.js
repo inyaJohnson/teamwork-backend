@@ -1,5 +1,5 @@
 const {Client} = require('pg');
-const connectionString = 'postgressql://postgres:password@localhost:5432/postgres';
+const connectionString = 'postgressql://postgres:password@localhost:5432/teamwork';
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
